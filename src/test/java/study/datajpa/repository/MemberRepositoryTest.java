@@ -1,5 +1,7 @@
 package study.datajpa.repository;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,6 +30,9 @@ class MemberRepositoryTest {
 
     @Autowired
     TeamRepository teamRepository;
+
+    @PersistenceContext
+    EntityManager entityManager;
 
     @Test
     void testMember() {
@@ -216,5 +221,35 @@ class MemberRepositoryTest {
 
         //then
         assertThat(resultCount).isEqualTo(3);
+    }
+
+    @Test
+    void findMemberLazy() {
+        //member1 -> teamA
+        //member2 -> teamB
+        Team teamA = new Team("teamA");
+        Team teamB = new Team("teamB");
+
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+
+        Member member1 = new Member("member1", 10, teamA);
+        Member member2 = new Member("member2", 10, teamB);
+
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        entityManager.flush();
+        entityManager.clear();
+
+        //when
+        //select Member
+        List<Member> members = memberRepository.findAll();
+
+        for (Member member : members) {
+            System.out.println("member = " + member);
+            System.out.println("member.getTeam().getClass() = " + member.getTeam().getClass()); // proxy
+            System.out.println("member.getTeam().getName() = " + member.getTeam().getName()); // select Team
+        }
     }
 }
