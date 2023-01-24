@@ -8,10 +8,6 @@ import lombok.*;
 @ToString(of = {"id", "userName", "age"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseEntity {
-    @Id
-    @GeneratedValue
-    @Column(name = "member_id")
-    private Long id;
 
     private String userName;
 

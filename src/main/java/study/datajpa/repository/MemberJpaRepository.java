@@ -7,6 +7,7 @@ import study.datajpa.entity.Member;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public class MemberJpaRepository {
@@ -28,7 +29,7 @@ public class MemberJpaRepository {
                 .getResultList();
     }
 
-    public Optional<Member> findById(Long id) {
+    public Optional<Member> findById(UUID id) {
         Member member = em.find(Member.class, id);
         return Optional.ofNullable(member);
     }
@@ -38,7 +39,7 @@ public class MemberJpaRepository {
                 .getSingleResult();
     }
 
-    public Member find(Long id) {
+    public Member find(UUID id) {
         return em.find(Member.class, id);
     }
 

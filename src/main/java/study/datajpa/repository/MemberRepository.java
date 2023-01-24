@@ -12,8 +12,9 @@ import study.datajpa.entity.Member;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
-public interface MemberRepository extends JpaRepository<Member, Long>, memberRepositoryCustom {
+public interface MemberRepository extends JpaRepository<Member, UUID>, memberRepositoryCustom {
     List<Member> findByUserNameAndAgeGreaterThan(String userName, int age);
 
     List<Member> findTop3HelloBy();
